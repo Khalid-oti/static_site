@@ -40,7 +40,7 @@ def generate_path(from_path, template_path, dest_path):
     with open(template_path, "r") as g:
         template_content = g.read()
     html = markdown_to_html_node(from_content).to_html()
-    title = extract_title(markdown_to_html_node(from_content).to_html())
+    title = extract_title(from_content)
     template_content.replace("{{ Title }}", title)
     template_content.replace("{{ Content }}", html)
     #dest_dir = dest_path.rsplit("/", 1)
