@@ -48,7 +48,6 @@ def generate_path(from_path, template_path, dest_path):
     dest_dir = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
-    shutil.copy(dest_path, dest_dir)
     with open(dest_path, "w") as h:
         h.write(template_content)
 
