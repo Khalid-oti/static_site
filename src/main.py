@@ -46,7 +46,8 @@ def generate_path(from_path, template_path, dest_path):
     #dest_dir = dest_path.rsplit("/", 1)
     if not os.path.exists(dest_path):
         os.makedirs(dest_path)
-    dest_path.write(template_content)
+    with open(dest_path, "w") as h:
+        h.write(template_content)
 
 
 
