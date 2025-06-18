@@ -43,9 +43,12 @@ def generate_path(from_path, template_path, dest_path):
     title = extract_title(from_content)
     template_content.replace("{{ Title }}", title)
     template_content.replace("{{ Content }}", html)
-    #dest_dir = dest_path.rsplit("/", 1)
-    if not os.path.exists(dest_path):
-        os.makedirs(dest_path)
+    if os.path.isdir(dest_path):
+        raise Exception("path must be file")
+    dest_dir = os.path.dirname(dest_path)
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+    shutil.copy(dest_path, dest_dir)
     with open(dest_path, "w") as h:
         h.write(template_content)
 
