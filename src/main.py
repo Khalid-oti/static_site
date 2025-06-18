@@ -1,5 +1,7 @@
 import os
 import shutil
+from markdown import markdown_to_html_node
+from htmlnode import HTMLNode, ParentNode, LeafNode
 
 def main():
     public_dir_path = "/home/khaledoti/workspace/github.com/Khalid-oti/static_site/public"
@@ -9,6 +11,7 @@ def main():
     shutil.rmtree(public_dir_path)
     os.mkdir(public_dir_path)
     copy_dir(static_dir_path, public_dir_path)
+    generate_path("content/index.md", "template.html", "public/index.html")
 
 def copy_dir(source_dir_path, destination_dir_path):
     dir_content_path_list = os.listdir(source_dir_path)
@@ -29,5 +32,20 @@ def extract_title(markdown):
         if line.strip()[0:2] == "# ":
             return line.strip()[2:]
     raise Exception("no title")
-        
+
+def generate_path(from_path, template_path, dest_path):
+    print(f"Generating page from {from_path} tp {dest_path}  using {template_path}")
+    from_content = from_path.read()
+    template_content = template_path.read()
+    html = markdown_to_html_node(from_content).to_html()
+    title = extract_title(markdown_to_html_node(from_content).to_html())
+    template_content.replace("{{ Title }}", title)
+    template_content.replace("{{ Content }}", html)
+    dest_dir = dest_path.rsplit("/", 1)
+    if not os.path.exists(dest_path):
+        os.mkdir(dest_path)
+    dest_path.write(template_content)
+
+
+
 main()
