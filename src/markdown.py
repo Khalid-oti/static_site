@@ -31,12 +31,19 @@ def markdown_to_blocks(markdown):
 
 def block_to_block_type(block):
     lines = block.split("\n")
+    pound_count = 0
     quote_counter = 0
     unordered_counter = 0
     ordered_counter = 0
 
-    if block[0:2] == "# " or block[0:3] == "## " or block[0:4] == "### " or block[0:5] == "#### " or block[0:6] == "##### " or block[0:7] == "###### ":
-        return BlockType.HEADING
+    for i in range(7):
+        if block[i] == "#":
+            pound_count += 1
+        if block[i] == " ":
+            if 0 < pound_count < 7:
+                return BlockType.HEADING
+            else:
+                break
 
     if block[0:3] == "```":
         if block[-1:-4:-1] == "```":
@@ -49,7 +56,7 @@ def block_to_block_type(block):
             quote_counter += 1
         if line[0:2] == "- ":
             unordered_counter += 1
-        if line[0:3] == f"{ordered_counter+1}. ":
+        if line[0:2+len(str(ordered_counter))] == f"{ordered_counter+1}. ":
             ordered_counter += 1
     if quote_counter == len(lines):
         return BlockType.QUOTE
@@ -107,20 +114,24 @@ def markdown_to_code(block):
     return ParentNode(tag="pre", children=[child_node], props=None)
     
 def markdown_to_quote(block):
-    return ParentNode(tag="blockquote", children=text_to_children(block), props=None)
+    text = block[1:]
+    return ParentNode(tag="blockquote", children=text_to_children(text), props=None)
     
 def markdown_to_unordered(block):
     new_block = []
     split_block = block.split("\n")
     for line in split_block:
-        line = ParentNode(tag="li", children=text_to_children(line))
-        new_block.append(line)
+        node = ParentNode(tag="li", children=text_to_children(line[2:]))
+        new_block.append(node)
     return ParentNode(tag="ul", children=new_block, props=None)
     
 def markdown_to_ordered(block):
     new_block = []
     split_block = block.split("\n")
+    line_number = 0
     for line in split_block:
-        line = ParentNode(tag="li", children=text_to_children(line))
-        new_block.append(line)
+        line_number += 1
+        text = line[2+len(str(line_number)):]
+        node = ParentNode(tag="li", children=text_to_children(text))
+        new_block.append(node)
     return ParentNode(tag="ol", children=new_block, props=None)

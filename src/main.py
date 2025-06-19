@@ -35,18 +35,21 @@ def extract_title(markdown):
 
 def generate_path(from_path, template_path, dest_path):
     print(f"Generating page from {from_path} tp {dest_path}  using {template_path}")
-    with open(from_path, "r") as f:
+    with open(from_path) as f:
         from_content = f.read()
-    with open(template_path, "r") as g:
+    with open(template_path) as g:
         template_content = g.read()
     html = markdown_to_html_node(from_content).to_html()
     title = extract_title(from_content)
-    template_content.replace("{{ Title }}", title)
-    template_content.replace("{{ Content }}", html)
-    #dest_dir = dest_path.rsplit("/", 1)
-    if not os.path.exists(dest_path):
-        os.makedirs(dest_path)
-    dest_path.write(template_content)
+    template_with_title = template_content.replace("{{ Title }}", title)
+    template_with_content = template_with_title.replace("{{ Content }}", html)
+    if os.path.isdir(dest_path):
+        raise Exception("path must be file")
+    dest_dir = os.path.dirname(dest_path)
+    if not os.path.exists(dest_dir):
+        os.makedirs(dest_dir)
+    with open(dest_path, "w") as h:
+        h.write(template_with_content)
 
 
 
