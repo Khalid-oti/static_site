@@ -11,14 +11,13 @@ def main():
     shutil.rmtree(public_dir_path)
     os.mkdir(public_dir_path)
     copy_dir(static_dir_path, public_dir_path)
-    for current_path, dir_names, file_names in os.walk("content"):
-        for file_name in file_names:
+    for current_path, dirnames, filenames in os.walk("content"):
+        for filename in filenames:
+            name, ext = os.path.splitext(filename)
+            from_filepath = os.path.join(current_path, filename)
             relative_path = os.path.relpath(current_path, "content")
-            file_path = os.path.join("public", relative_path, file_name)
-            generate_path(f"{current_path}/{file_name}", "template.html", file_path)
-        #for dir_name in dir_names:
-        #    dir_path = os.path.join("public", current_path.split("/", 1)[1], dir_name)
-        #    os.makedirs(dir_path)
+            dest_filepath = os.path.join("public", relative_path, name + ".html")
+            generate_path(from_filepath, "template.html", dest_filepath)
 
 def copy_dir(source_dir_path, destination_dir_path):
     dir_content_path_list = os.listdir(source_dir_path)
