@@ -114,8 +114,13 @@ def markdown_to_code(block):
     return ParentNode(tag="pre", children=[child_node], props=None)
     
 def markdown_to_quote(block):
-    text = block[1:]
-    return ParentNode(tag="blockquote", children=text_to_children(text), props=None)
+    new_lines = []
+    lines = block.split("\n")
+    for line in lines:
+        text = line[1:].strip()
+        new_lines.append(text)
+    new_block = " ".join(new_lines)
+    return ParentNode(tag="blockquote", children=text_to_children(new_block), props=None)
     
 def markdown_to_unordered(block):
     new_block = []
