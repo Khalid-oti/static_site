@@ -11,7 +11,13 @@ def main():
     shutil.rmtree(public_dir_path)
     os.mkdir(public_dir_path)
     copy_dir(static_dir_path, public_dir_path)
-    generate_path("content/index.md", "template.html", "public/index.html")
+    for current_path, dir_names, file_names in os.walk("content"):
+        for file_name in file_names:
+            file_path = os.path.join("public", current_path.split("/", 1)[1], file_name)
+            generate_path(f"{current_path}/{file_name}", "template.html", file_path)
+        #for dir_name in dir_names:
+        #    dir_path = os.path.join("public", current_path.split("/", 1)[1], dir_name)
+        #    os.makedirs(dir_path)
 
 def copy_dir(source_dir_path, destination_dir_path):
     dir_content_path_list = os.listdir(source_dir_path)
@@ -34,7 +40,7 @@ def extract_title(markdown):
     raise Exception("no title")
 
 def generate_path(from_path, template_path, dest_path):
-    print(f"Generating page from {from_path} tp {dest_path}  using {template_path}")
+    print(f"Generating page from {from_path} to {dest_path}  using {template_path}")
     with open(from_path) as f:
         from_content = f.read()
     with open(template_path) as g:
@@ -43,14 +49,11 @@ def generate_path(from_path, template_path, dest_path):
     title = extract_title(from_content)
     template_with_title = template_content.replace("{{ Title }}", title)
     template_with_content = template_with_title.replace("{{ Content }}", html)
-    if os.path.isdir(dest_path):
-        raise Exception("path must be file")
     dest_dir = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
         os.makedirs(dest_dir)
     with open(dest_path, "w") as h:
         h.write(template_with_content)
-
 
 
 main()

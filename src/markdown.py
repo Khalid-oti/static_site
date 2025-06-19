@@ -1,6 +1,5 @@
-import re
 from enum import Enum
-from htmlnode import HTMLNode, ParentNode, LeafNode
+from htmlnode import ParentNode
 from textnode import text_node_to_html_node, text_to_text_nodes, TextNode, TextType
 
 
