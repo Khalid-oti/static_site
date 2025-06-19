@@ -54,7 +54,7 @@ def generate_path(from_path, template_path, dest_path, basepath):
     title = extract_title(from_content)
     template_with_title = template_content.replace("{{ Title }}", title)
     template_with_content = template_with_title.replace("{{ Content }}", html)
-    templatev3 = template_content.replace('href="/', f'href="{basepath}')
+    templatev3 = template_with_content.replace('href="/', f'href="{basepath}')
     filled_template = templatev3.replace('src="/', f'src="{basepath}')
     dest_dir = os.path.dirname(dest_path)
     if not os.path.exists(dest_dir):
