@@ -13,7 +13,8 @@ def main():
     copy_dir(static_dir_path, public_dir_path)
     for current_path, dir_names, file_names in os.walk("content"):
         for file_name in file_names:
-            file_path = os.path.join("public", current_path.split("/", 1)[1], file_name)
+            relative_path = os.path.relpath(current_path, "content")
+            file_path = os.path.join("public", relative_path, file_name)
             generate_path(f"{current_path}/{file_name}", "template.html", file_path)
         #for dir_name in dir_names:
         #    dir_path = os.path.join("public", current_path.split("/", 1)[1], dir_name)
