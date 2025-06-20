@@ -9,7 +9,7 @@ def main():
     static_dir_path = "/home/khaledoti/workspace/github.com/Khalid-oti/static_site/static"
     #content
     try:
-        basepath = sys.argv[1]
+        basepath = sys.argv[0]
     except Exception:
         basepath = "/"
     if not os.path.exists(public_dir_path):
