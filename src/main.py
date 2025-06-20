@@ -5,7 +5,7 @@ from markdown import markdown_to_html_node
 from htmlnode import HTMLNode, ParentNode, LeafNode
 
 def main():
-    public_dir_path = "/home/khaledoti/workspace/github.com/Khalid-oti/static_site/public"
+    public_dir_path = "/home/khaledoti/workspace/github.com/Khalid-oti/static_site/docs"
     static_dir_path = "/home/khaledoti/workspace/github.com/Khalid-oti/static_site/static"
     basepath = sys.argv
     if not os.path.exists(public_dir_path):
@@ -21,7 +21,7 @@ def generate_path_recursive(basepath):
             name, ext = os.path.splitext(filename)
             from_filepath = os.path.join(current_path, filename)
             relative_path = os.path.relpath(current_path, "content")
-            dest_filepath = os.path.join("public", relative_path, name + ".html")
+            dest_filepath = os.path.join("docs", relative_path, name + ".html")
             generate_path(from_filepath, "template.html", dest_filepath, basepath)
 
 def copy_dir(source_dir_path, destination_dir_path):
