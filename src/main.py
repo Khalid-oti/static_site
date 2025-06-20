@@ -7,7 +7,8 @@ from htmlnode import HTMLNode, ParentNode, LeafNode
 def main():
     public_dir_path = "/home/khaledoti/workspace/github.com/Khalid-oti/static_site/docs"
     static_dir_path = "/home/khaledoti/workspace/github.com/Khalid-oti/static_site/static"
-    #content
+    #443c36
+    #dda15e
     try:
         basepath = sys.argv[1]
     except Exception:
